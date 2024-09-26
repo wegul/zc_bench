@@ -280,7 +280,7 @@ if __name__ == "__main__":
     manage_offloads(args.interface, args.lro, args.tso, args.gso, args.gro, args.checksum)
 
     # Set IRQ config
-    setup_affinity_mode(args.affinity, args.interface, args.arfs, args.sender, args.receiver, args.flow_type, args.config)
+    # setup_affinity_mode(args.affinity, args.interface, args.arfs, args.sender, args.receiver, args.flow_type, args.config)
 
     # Setup other config
     set_speed(args.interface, args.speed)

@@ -19,11 +19,11 @@ def process_throughput_output(lines):
     lines = lines[-12:-2]
     for line in lines:
         elements = line.split()
-        if len(elements) > 2 and elements[-1] == "Gbits/sec":
-            throughput += float(elements[-2])
+        if len(elements) > 2 and elements[-3] == "Gbits/sec":
+            throughput += float(elements[-4])
             num_samples += 1
-        elif len(elements) > 2 and elements[-1] == "Mbits/sec":
-            throughput += float(elements[-2]) / 1000
+        elif len(elements) > 2 and elements[-3] == "Mbits/sec":
+            throughput += float(elements[-4]) / 1000
             num_samples += 1
 
     # Return the average throughput

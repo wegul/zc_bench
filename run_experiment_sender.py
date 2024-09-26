@@ -154,9 +154,9 @@ def clear_processes():
 
 def run_iperf(cpu, addr, port, duration, window):
     if window is None:
-        args = ["taskset", "-c", str(cpu), "iperf", "-i", "1", "-c", addr, "-t", str(duration), "-p", str(port)]
+        args = ["taskset", "-c", str(cpu), "iperf3", "-i", "1", "-c", addr, "-t", str(duration), "-p", str(port)]
     else:
-        args = ["taskset", "-c", str(cpu), "iperf", "-i", "1", "-c", addr, "-t", str(duration), "-p", str(port), "-w", str(window / 2) + "K"]
+        args = ["taskset", "-c", str(cpu), "iperf3", "-i", "1", "-c", addr, "-t", str(duration), "-p", str(port), "-w", str(window / 2) + "K"]
 
     return subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, universal_newlines=True)
 

@@ -107,7 +107,7 @@ def parse_args():
             exit(1)
     elif not args.arfs:
         if args.config in ["incast", "single"]:
-            args.affinity = [1]
+            args.affinity = [0] #Default IRQ set to cpu_0
         elif args.config in ["outcast", "one-to-one"]:
             args.affinity = [cpu + 1 for cpu in args.cpus]
         elif args.config == "all-to-all":
@@ -195,9 +195,9 @@ def clear_processes():
 
 def run_iperf(cpu, port, window):
     if window is None:
-        args = ["taskset", "-c", str(cpu), "iperf", "-i", "1", "-s", "-p", str(port)]
+        args = ["taskset", "-c", str(cpu), "iperf3", "-i", "1", "-s", "-p", str(port)]
     else:
-        args = ["taskset", "-c", str(cpu), "iperf", "-s", "-i", "1", "-p", str(port), "-w", str(window / 2) + "K"]
+        args = ["taskset", "-c", str(cpu), "iperf3", "-s", "-i", "1", "-p", str(port), "-w", str(window / 2) + "K"]
 
     return subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, universal_newlines=True)
 
@@ -299,8 +299,9 @@ if __name__ == "__main__":
     # Start the XMLRPC server thread
     server_thread.start()
 
+    # SWG: In ZCRX, we dont care about packet drop.
     # Set packet drop rate
-    set_packet_drop_rate(args.packet_drop)
+    # set_packet_drop_rate(args.packet_drop)
 
     # Print the output directory
     if args.output is not None:
@@ -671,4 +672,4 @@ if __name__ == "__main__":
     server_thread.join()
 
     # Reset packet drop rate
-    set_packet_drop_rate(0)
+    # set_packet_drop_rate(0)
