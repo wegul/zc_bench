@@ -16,8 +16,8 @@ mkdir -p $results_dir
 # No TSO
 echo "network_setup.py $iface --no-tso"
 $DIR/network_setup.py $iface --no-tso
-echo "run_experiment_receiver.py --throughput --utilisation --util-breakdown --output $results_dir/single-flow_tsogro | tee $results_dir/single-flow_notso.log"
-$DIR/run_experiment_receiver.py --throughput --utilisation --output $results_dir/single-flow_jumbo | tee $results_dir/single-flow_notso.log
+echo "$DIR/run_experiment_sender.py --receiver $public_dst_ip --addr $device_dst_ip --throughput --utilisation --util-breakdown --output $results_dir/single-flow_notso | tee $results_dir/single-flow_notso.log"
+$DIR/run_experiment_sender.py --receiver $public_dst_ip --addr $device_dst_ip --throughput --utilisation --util-breakdown --output $results_dir/single-flow_notso | tee $results_dir/single-flow_notso.log
 
 
 # # TSO/GRO
