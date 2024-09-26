@@ -283,9 +283,9 @@ if __name__ == "__main__":
     # setup_affinity_mode(args.affinity, args.interface, args.arfs, args.sender, args.receiver, args.flow_type, args.config)
 
     # Setup other config
-    set_speed(args.interface, args.speed)
-    set_mtu(args.interface, args.mtu)
+    # set_speed(args.interface, args.speed)
+    # set_mtu(args.interface, args.mtu)
     increase_sock_size_limit(args.sock_size)
-    set_ddio_ways(args.dca)
+    # set_ddio_ways(args.dca)
     set_ring_buffer_size(args.interface, args.ring_buffer)
 

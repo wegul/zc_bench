@@ -10,11 +10,19 @@ results_dir=${2:-$DIR/results}
 # Create results directory
 mkdir -p $results_dir
 
-# TSO/GRO
+
+# No TSO
+echo "network_setup.py $iface --no-tso"
+$DIR/network_setup.py $iface --no-tso
+echo "run_experiment_receiver.py --throughput --utilisation --util-breakdown --output $results_dir/single-flow_tsogro | tee $results_dir/single-flow_notso.log"
+$DIR/run_experiment_receiver.py --throughput --utilisation --output $results_dir/single-flow_jumbo | tee $results_dir/single-flow_notso.log
+
+
+# # TSO/GRO
 # echo "network_setup.py $iface --gro --tso"
 # $DIR/network_setup.py $iface --gro --tso
-echo "run_experiment_receiver.py --throughput --utilisation --util-breakdown --output $results_dir/single-flow_tsogro | tee $results_dir/single-flow_tsogro.log"
-$DIR/run_experiment_receiver.py --throughput --utilisation --util-breakdown --output $results_dir/single-flow_tsogro | tee $results_dir/single-flow_tsogro.log
+# echo "run_experiment_receiver.py --throughput --utilisation --util-breakdown --output $results_dir/single-flow_tsogro | tee $results_dir/single-flow_tsogro.log"
+# $DIR/run_experiment_receiver.py --throughput --utilisation --util-breakdown --output $results_dir/single-flow_tsogro | tee $results_dir/single-flow_tsogro.log
 
 # # TSO/GRO+Jumbo Frame
 # $DIR/network_setup.py $iface --gro --tso
