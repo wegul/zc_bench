@@ -11,18 +11,18 @@ results_dir=${2:-$DIR/results}
 mkdir -p $results_dir
 
 
-# No TSO
+# No TSO + aRFS
 echo "network_setup.py $iface --no-tso"
-$DIR/network_setup.py $iface --no-tso
-echo "run_experiment_receiver.py --throughput --utilisation --util-breakdown --output $results_dir/single-flow_tsogro | tee $results_dir/single-flow_notso.log"
-$DIR/run_experiment_receiver.py --throughput --utilisation --output $results_dir/single-flow_jumbo | tee $results_dir/single-flow_notso.log
+${DIR}/network_setup.py $iface --no-tso
+echo "run_experiment_receiver.py --throughput --utilisation --util-breakdown --output ${results_dir}/single-flow_notso | tee ${results_dir}/single-flow_notso.log"
+${DIR}/run_experiment_receiver.py --throughput --utilisation --util-breakdown --output ${results_dir}/single-flow_notso | tee ${results_dir}/single-flow_notso.log
 
 
-# # TSO/GRO
-# echo "network_setup.py $iface --gro --tso"
-# $DIR/network_setup.py $iface --gro --tso
-# echo "run_experiment_receiver.py --throughput --utilisation --util-breakdown --output $results_dir/single-flow_tsogro | tee $results_dir/single-flow_tsogro.log"
-# $DIR/run_experiment_receiver.py --throughput --utilisation --util-breakdown --output $results_dir/single-flow_tsogro | tee $results_dir/single-flow_tsogro.log
+# TSO + aRFS
+echo "network_setup.py $iface --tso"
+${DIR}/network_setup.py $iface --tso
+echo "run_experiment_receiver.py --throughput --utilisation --util-breakdown --output ${results_dir}/single-flow_tsogro | tee ${results_dir}/single-flow_tsogro.log"
+${DIR}/run_experiment_receiver.py --throughput --utilisation --util-breakdown --output ${results_dir}/single-flow_tsogro | tee ${results_dir}/single-flow_tsogro.log
 
 # # TSO/GRO+Jumbo Frame
 # $DIR/network_setup.py $iface --gro --tso
