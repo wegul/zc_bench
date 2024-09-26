@@ -127,7 +127,7 @@ def parse_args():
             exit(1)
     elif not args.arfs:
         if args.config in ["outcast", "single"]:
-            args.affinity = [1]
+            args.affinity = [0] #Default IRQ set to cpu_0
         elif args.config in ["incast", "one-to-one"]:
             args.affinity = [cpu + 1 for cpu in args.cpus]
         elif args.config == "all-to-all":
