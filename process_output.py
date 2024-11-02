@@ -3,7 +3,8 @@ import re
 
 
 # Path to the symbols map file
-SYMBOL_MAP_FILE = os.path.join(os.path.split(os.path.realpath(__file__))[0], "symbol_mapping.tsv")
+SYMBOL_MAP_FILE = os.path.join(os.path.split(
+    os.path.realpath(__file__))[0], "symbol_mapping.tsv")
 
 
 def process_throughput_output(lines):
@@ -70,10 +71,11 @@ def process_cache_miss_output(lines):
 
 def process_util_breakdown_output(lines):
     contributions = {}
-    not_found = []
+    not_found = set()
     symbol_map = {}
     total_contrib = 0.
     unaccounted_contrib = 0.
+    func_map = {}
 
     # Read the symbols map file
     with open(SYMBOL_MAP_FILE, "r") as f:
@@ -82,6 +84,10 @@ def process_util_breakdown_output(lines):
             if len(comps) == 2:
                 symbol, typ = line.split()
                 symbol_map[symbol] = typ
+
+                if symbol not in func_map:
+                    func_map[symbol] = 0.
+
                 if typ not in contributions:
                     contributions[typ] = 0.
 
@@ -96,12 +102,18 @@ def process_util_breakdown_output(lines):
                 if func in symbol_map:
                     typ = symbol_map[func]
                     contributions[typ] += contrib
+
+                    func_map[func] += contrib
                 else:
                     if contrib > 0.01:
-                        not_found.append(func)
+                        not_found.add(func)
                     unaccounted_contrib += contrib
         else:
             break
+
+    for func in func_map:
+        if symbol_map[func] == "mm":
+            print(symbol_map[func]+" "+func+": "+str(func_map[func]))
 
     return total_contrib, unaccounted_contrib, contributions, not_found
 
@@ -112,7 +124,8 @@ def process_latency_output(lines):
     # Try to parse the latecy from dmesg output
     for line in lines:
         try:
-            samples.append(int(re.match(r"^.*\[data-copy-latency\] latency=(.*)$", line).group(1)))
+            samples.append(
+                int(re.match(r"^.*\[data-copy-latency\] latency=(.*)$", line).group(1)))
         except:
             pass
 
@@ -120,7 +133,8 @@ def process_latency_output(lines):
     samples.sort()
     num_samples = len(samples)
     avg_latency = (sum(samples) / num_samples) / 1000
-    tail_latency = samples[max(num_samples - 1, round(0.99 * num_samples + 0.5))] / 1000
+    tail_latency = samples[max(
+        num_samples - 1, round(0.99 * num_samples + 0.5))] / 1000
 
     return avg_latency, tail_latency
 
@@ -141,4 +155,3 @@ def process_skb_sizes_output(lines):
         return skb_sizes
     else:
         return [s / total for s in skb_sizes]
-
